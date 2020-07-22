@@ -1,181 +1,16 @@
 <!DOCTYPE HTML>
 <html>
-
-<head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Restaurante Saboroso!</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="description" content="Site do restaurante fictício Saboroso desenvolvido no curso de JavaScript da Hcode Treinamentos"
-	/>
-	<meta name="author" content="Hcode.com.br" />
-
-	<link rel="icon" href="favicon.ico" type="image/x-icon" />
-	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
-
-	<meta name="theme-color" content="#FBB448">
-
-	<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet">
-	<link href="https://fonts.googleapis.com/css?family=Kaushan+Script" rel="stylesheet">
-
-	<!-- Animate.css -->
-	<link rel="stylesheet" href="css/animate.css">
-	<!-- Icomoon Icon Fonts-->
-	<link rel="stylesheet" href="css/icomoon.css">
-	<!-- Themify Icons-->
-	<link rel="stylesheet" href="css/themify-icons.css">
-	<!-- Bootstrap  -->
-	<link rel="stylesheet" href="css/bootstrap.css">
-
-	<!-- Magnific Popup -->
-	<link rel="stylesheet" href="css/magnific-popup.css">
-
-	<!-- Bootstrap DateTimePicker -->
-	<link rel="stylesheet" href="css/bootstrap-datetimepicker.min.css">
-
-	<!-- Owl Carousel  -->
-	<link rel="stylesheet" href="css/owl.carousel.min.css">
-	<link rel="stylesheet" href="css/owl.theme.default.min.css">
-
-	<!-- Theme style  -->
-	<link rel="stylesheet" href="css/style.css">
-
-	<!-- Modernizr JS -->
-	<script src="js/modernizr-2.6.2.min.js"></script>
-	<!-- FOR IE9 below -->
-	<!--[if lt IE 9]>
-	<script src="js/respond.min.js"></script>
-	<![endif]-->
-
-</head>
+<%- include('inc/head') -%>
 
 <body>
 
 	<div class="gtco-loader"></div>
 
 	<div id="page">
-
-		<nav class="gtco-nav" role="navigation">
-			<div class="gtco-container">
-
-				<div class="row">
-					<div class="col-sm-4 col-xs-12">
-						<div id="gtco-logo">
-							<a href="index.html">Saboroso
-								<em>!</em>
-							</a>
-						</div>
-					</div>
-					<div class="col-xs-8 text-right menu-1">
-						<ul>
-							<li>
-								<a href="index.html">Home</a>
-							</li>
-							<li>
-								<a href="menu.html">Menu</a>
-							</li>
-							<li>
-								<a href="services.html">Serviços</a>
-							</li>
-							<li>
-								<a href="contact.html">Contato</a>
-							</li>
-							<li class="btn-cta">
-								<a href="reservation.html">
-									<span>Reserva</span>
-								</a>
-							</li>
-						</ul>
-					</div>
-				</div>
-
-			</div>
-		</nav>
-
-		<header id="gtco-header" class="gtco-cover gtco-cover-md" role="banner" style="background-image: url(images/img_bg_1.jpg)"
-		 data-stellar-background-ratio="0.5">
-			<div class="overlay"></div>
-			<div class="gtco-container">
-				<div class="row">
-					<div class="col-md-12 col-md-offset-0 text-left">
-
-
-						<div class="row row-mt-15em">
-							<div class="col-md-7 mt-text animate-box" data-animate-effect="fadeInUp">
-								<span class="intro-text-small">Feito por
-									<a href="https://www.hcode.com.br" target="_blank">Hcode.com.br</a>
-								</span>
-								<h1 class="cursive-font">Restaurante Saboroso!</h1>
-							</div>
-							<div class="col-md-4 col-md-push-1 animate-box" data-animate-effect="fadeInRight">
-								<div class="form-wrap">
-									<div class="tab">
-
-										<div class="tab-content">
-											<div class="tab-content-inner active" data-content="signup">
-												<h3 class="cursive-font">Reserva de mesa</h3>
-												<form action="#">
-													<div class="row form-group">
-														<div class="col-md-12">
-															<label for="inputName">Nome</label>
-															<input type="text" id="inputName" name="name" class="form-control">
-														</div>
-													</div>
-													<div class="row form-group">
-														<div class="col-md-12">
-															<label for="inputEmail">E-mail</label>
-															<input type="email" id="inputEmail" name="email" class="form-control">
-														</div>
-													</div>
-													<div class="row form-group">
-														<div class="col-md-12">
-															<label for="inputPeople">Pessoas</label>
-															<select id="inputPeople" name="people" class="form-control">
-																<option value=""> -- selecione -- </option>
-																<option value="1">1</option>
-																<option value="2">2</option>
-																<option value="3">3</option>
-																<option value="4">4</option>
-																<option value="5">5+</option>
-															</select>
-														</div>
-													</div>
-													<div class="row form-group">
-														<div class="col-md-12">
-															<label for="inputDate">Data</label>
-															<input type="text" id="inputDate" name="date" class="form-control">
-														</div>
-													</div>
-													<div class="row form-group">
-														<div class="col-md-12">
-															<label for="inputTime">Hora</label>
-															<input type="text" id="inputTime" name="time" class="form-control">
-														</div>
-													</div>
-
-													<div class="row form-group">
-														<div class="col-md-12">
-															<input type="submit" class="btn btn-primary btn-block" value="Reservar Agora">
-														</div>
-													</div>
-												</form>
-											</div>
-
-
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-
-
-					</div>
-				</div>
-			</div>
-		</header>
-
-
-
+		
+		<%- include('inc/header-menu') -%>
+		<%- include('inc/header-index') -%>
+	
 		<div class="gtco-section">
 			<div class="gtco-container">
 				<div class="row">
@@ -186,61 +21,25 @@
 					</div>
 				</div>
 				<div class="row">
-
+					<% menus.forEach(function(row){ %>
 					<div class="col-lg-4 col-md-4 col-sm-6">
-						<a href="images/img_1.jpg" class="fh5co-card-item image-popup">
+						<a href="<%= row.photo %>" class="fh5co-card-item image-popup">
 							<figure>
 								<div class="overlay">
 									<i class="ti-plus"></i>
 								</div>
-								<img src="images/img_1.jpg" alt="Image" class="img-responsive">
+								<img src="<%= row.photo %>" alt="Image" class="img-responsive">
 							</figure>
 							<div class="fh5co-text">
-								<h2>Bife de Costela com molho</h2>
-								<p>Vide electram sadipscing et per. Aenean aliquam molestie leo, vitae iaculis nisl.</p>
+								<h2><%= row.title %></h2>
+								<p><%= row.description %></p>
 								<p>
-									<span class="price cursive-font">R$35,69</span>
+									<span class="price cursive-font"><%= row.price %></span>
 								</p>
 							</div>
 						</a>
 					</div>
-					<div class="col-lg-4 col-md-4 col-sm-6">
-						<a href="images/img_3.jpg" class="fh5co-card-item image-popup">
-							<figure>
-								<div class="overlay">
-									<i class="ti-plus"></i>
-								</div>
-								<img src="images/img_2.jpg" alt="Image" class="img-responsive">
-							</figure>
-							<div class="fh5co-text">
-								<h2>Hambúrguer com Fritas</h2>
-								<p>Vide electram sadipscing et per. Aenean aliquam molestie leo, vitae iaculis nisl.</p>
-								<p>
-									<span class="price cursive-font">R$22,80</span>
-								</p>
-					
-							</div>
-						</a>
-					</div>
-
-					<div class="col-lg-4 col-md-4 col-sm-6">
-						<a href="images/img_5.jpg" class="fh5co-card-item image-popup">
-							<figure>
-								<div class="overlay">
-									<i class="ti-plus"></i>
-								</div>
-								<img src="images/img_5.jpg" alt="Image" class="img-responsive">
-							</figure>
-							<div class="fh5co-text">
-								<h2>Chilli com Carne</h2>
-								<p>Vide electram sadipscing et per. Aenean aliquam molestie leo, vitae iaculis nisl.</p>
-								<p>
-									<span class="price cursive-font">R$29,40</span>
-								</p>
-							</div>
-						</a>
-					</div>
-
+					<% }); %>
 				</div>
 			</div>
 		</div>
