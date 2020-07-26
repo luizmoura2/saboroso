@@ -3,13 +3,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="col-md-6 animate-box">
-                <% if ( error.length > 0 ){ %>
-                    <div class="alert <%= clazz %>">                        
-                        <% error.forEach(function(row){ %>
-                            <%= row %> <br/>
-                        <% }); %>
-                    </div>
-                <% } %>
+                <%- include('./alerts') -%>
                 <h3>Reserva de mesa</h3>
                 <form action="/reservations" method="POST">
                     <div class="row form-group">

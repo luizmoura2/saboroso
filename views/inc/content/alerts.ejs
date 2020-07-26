@@ -1,0 +1,7 @@
+<% if ( error.length > 0 ){ %>
+    <div class="alert <%= clazz %>">                        
+        <% error.forEach(function(row){ %>
+            <%= row %> <br/>
+        <% }); %>
+    </div>
+<% } %>
