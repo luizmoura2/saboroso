@@ -8,8 +8,7 @@ module.exports ={
                 (SELECT COUNT(*) FROM tb_menus) AS nrmenus,
                 (SELECT COUNT(*) FROM tb_reservations) AS nrreservations,
                 (SELECT COUNT(*) FROM tb_users) AS nrusers;`;
-        return new Promise((resolve, reject)=>{
-           
+        return new Promise((resolve, reject)=>{           
             conn.query(query, (err, result)=>{
                 if (err){
                     reject(err);
@@ -19,7 +18,7 @@ module.exports ={
             })
         });
     },
-
+       
     getParams(req, params){
         console.log(req.session.user);
         return Object.assign({
