@@ -72,14 +72,16 @@ router.get('/contacts', function(req, res, next) {
 
 });
 
+router.post('/menus', function(req, res, next) {
+  res.send(req.body);
+});
+
 router.get('/menus', function(req, res, next) {
   menus.getMenus().then(data=>{
     res.render('admin/menus', admin.getParams(req, {
       data
     })); 
   });
-  
-
 });
 
 router.get('/reservations', function(req, res, next) {
