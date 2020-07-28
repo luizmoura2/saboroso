@@ -12,6 +12,7 @@
     "ejs": "~2.6.1",
     "express": "~4.16.1",
     "express-session": "^1.17.1",
+    "formidable": "^1.2.2",
     "http-errors": "~1.6.3",
     "mariadb": "^2.4.2",
     "morgan": "~1.9.1",

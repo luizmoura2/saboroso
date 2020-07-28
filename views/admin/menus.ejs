@@ -151,10 +151,12 @@
     fetch('/admin/menus', {
       method: 'post',
       body: formData
-    }).then(response=> response.json())
+    }).then(response=>{response.json()
       .then(json=>{
-        console.log('JSON', json);
+       // console.log(json);
+        window.location.reload()
       });
+    })
 
   });
 

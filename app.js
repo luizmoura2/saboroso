@@ -3,6 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+//var formidable = require('formidable');
 
 const redis = require('redis');
 const session = require('express-session');
@@ -21,8 +22,43 @@ redisClient.on('error', console.log)
 
 var indexRouter = require('./routes/index');
 var adminRouter = require('./routes/admin');
+const { copyFileSync } = require('fs');
 
 var app = express();
+
+/*app.use( (req, res, next)=>{ 
+    if (req.url === 'post'){
+      var form = formidable.IncomingForm({
+        uploadDir:path.join(__dirname, '/public/images'),
+        keepExtensions: true,
+        multiples: true
+      });
+
+      form.parse(req, function(err, fields, files){
+        req.fields = fields;
+        req.files = files;
+        next();
+      });   
+      
+   }else if (req.method === 'POST') {
+     
+     var form = formidable.IncomingForm({
+        uploadDir:path.join(__dirname, '/public/images'),
+        keepExtensions: true,
+        multiples: true
+      });
+
+      form.parse(req, function(err, fields, files){
+        req.fields = fields;
+        req.files = files;
+        next();
+      });      
+  }else{
+    next();
+  }  
+  
+});*/
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

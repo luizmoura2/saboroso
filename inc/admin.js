@@ -20,7 +20,6 @@ module.exports ={
     },
        
     getParams(req, params){
-        console.log(req.session.user);
         return Object.assign({
             menus: req.menus,
             user: req.session.user[0]

@@ -3,6 +3,14 @@ var router = express.Router();
 var users = require('./../inc/users');
 var admin = require('./../inc/admin');
 var menus = require('./../inc/menus');
+var path = require('path');
+var formidable = require('formidable');
+
+var form = formidable.IncomingForm({
+            uploadDir:path.join(__dirname, '../public/images'),
+            keepExtensions: true,
+            multiples: true
+});
 
 
 router.use(function(req, res, next){
@@ -73,7 +81,20 @@ router.get('/contacts', function(req, res, next) {
 });
 
 router.post('/menus', function(req, res, next) {
-  res.send(req.body);
+  
+  form.parse(req, (err, fields, files) => {
+    if (err) {
+      next(err);
+      return;
+    }else{
+      menus.save(fields, files).then(results=>{
+        res.send(results);
+      }).catch(e=>{
+        res.send(e);
+      })
+    }
+  });
+ 
 });
 
 router.get('/menus', function(req, res, next) {
