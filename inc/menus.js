@@ -40,6 +40,41 @@ module.exports = {
                                 }
             })
         });
+    },
 
+    update(fields, files){
+        return new Promise((resolve, reject)=>{
+            let query ='';
+            let params = [];
+            if (files.photo.name){
+                fields.photo = `images/${path.parse(files.photo.path).base}`;
+                query = `UPDATE tb_menus SET title =?, description=?,  price=?, photo=? WHERE id=?`;
+                params = [
+                            fields.title,
+                            fields.description,
+                            fields.price,
+                            fields.photo,
+                            fields.id
+                        ];
+            }else{
+                query = `UPDATE tb_menus SET title =?, description=?,  price=? WHERE id=?`;
+                params = [
+                            fields.title,
+                            fields.description,
+                            fields.price,
+                            fields.id
+                        ];
+            }
+           
+            conn.query(query, params, (err, results)=>{
+                        if (err){
+                            //console.log(err);
+                            reject(err);
+                        }else{
+                            //console.log(results);
+                            resolve(results);
+                        }
+            });
+        });
     }
 }

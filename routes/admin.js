@@ -97,6 +97,25 @@ router.post('/menus', function(req, res, next) {
  
 });
 
+router.put('/menus', function(req, res, next) {
+  
+  form.parse(req, (err, fields, files) => {
+    if (err) {
+      next(err);
+      return;
+    }else{
+      menus.update(fields, files).then(results=>{
+        //res.send(results);
+        console.log(results);
+      }).catch(e=>{
+        console.log(e);
+        //res.send(e);
+      })
+    }
+  });
+ 
+});
+
 router.get('/menus', function(req, res, next) {
   menus.getMenus().then(data=>{
     res.render('admin/menus', admin.getParams(req, {

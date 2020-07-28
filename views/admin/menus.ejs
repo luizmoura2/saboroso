@@ -36,13 +36,15 @@
               </thead>
               <tbody>
                 <% data.forEach(function(row){ %>
-                  <tr data-row="<%= JSON.stringify(row);%>">
+                  <tr>
                     <td><%= row.id %></td>
                     <td><img src="/<%= row.photo %>" alt="" style="height: 18px;"></td>
                     <td><%= row.title %></td>
                     <td><%= row.description %></td>
                     <td><%= row.price %></td>
-                    <td><button type="button" class="btn btn-xs btn-info btn-update" data-toggle="modal" data-target="#modal-update"><i
+                    <td><button type="button" id="edit" class="btn btn-xs btn-info btn-update"
+                         onclick="menuEdit(this)"
+                          data-toggle="modal" data-target="modal-update" data-row='<%= JSON.stringify(row);%>'><i
                           class="fa fa-pencil"></i> Editar</button>&nbsp;<button type="button" class="btn btn-xs btn-danger btn-delete"><i
                           class="fa fa-trash"></i> Excluir</button></td>
                   </tr>
@@ -72,6 +74,7 @@
               <div class="form-group">
                 <label for="inputTitleCreate">Título</label>
                 <input type="text" class="form-control" id="inputTitleCreate" name="title">
+                <input type="hidden" class="form-control" id="inputIdUpdate" name="id">
               </div>
               <div class="form-group">
                 <label for="inputDescriptionCreate">Descrição</label>
@@ -83,7 +86,7 @@
               </div>
               <div class="form-group">
                 <label for="inputPhotoCreate">Foto</label>
-                <img style="max-width: 128px; max-height: 128px; display: block;" src="dist/img/boxed-bg.jpg">
+                <img  style="max-width: 128px; max-height: 128px; display: block;" src="dist/img/boxed-bg.jpg">
                 <input type="file" class="form-control" id="inputPhotoCreate" name="photo">
               </div>
             </div>
@@ -141,23 +144,54 @@
     
 <%- include('./inc/footer') -%>
 
+<script src='/js/LcomFileReader.js'></script>
 <script>
+
+  new LcomFileReader('#modal-create [type=file]', '#modal-create img');
+
   let formCreate = document.querySelector('#modal-create form');
 
+  $('#modal-create').on('hidden.bs.modal', e=>{
+    formCreate.querySelector('#inputIdUpdate').value = '';
+    formCreate.reset();
+  });
+  
   formCreate.addEventListener('submit', e=>{
-    e.preventDefault();
+    e.preventDefault();  
+    
     let formData = new FormData(formCreate);
-
-    fetch('/admin/menus', {
-      method: 'post',
-      body: formData
-    }).then(response=>{response.json()
+    let option = {}
+    if (formData.get('id') === ''){
+      option = { method: 'post', body: formData };
+    }else{
+      option = { method: 'put', body: formData  };
+    }
+    
+    fetch('/admin/menus', option).then(response=>{response.json()
       .then(json=>{
-       // console.log(json);
-        window.location.reload()
+        console.log(json);
+        //window.location.reload()
       });
     })
-
   });
 
+  menuEdit =  e =>{
+    formCreate.reset();
+    let row = JSON.parse(e.dataset.row);
+    let inputs  = formCreate.querySelectorAll('.form-control');
+    inputs.forEach(input=>{
+      if (input.name != 'photo'){
+        input.value = row[input.name];       
+      }else{
+        formCreate.querySelector('img').src = `/${row['photo']}`;
+      }
+      console.log('input ', input.name, 'row', row[input.name]);
+    });    
+   
+    formCreate.setAttribute('method', 'put');
+    $('#modal-create').modal('show');
+   
+  }
+
+  //$('.btn-update').bind('click', menuEdit(this));
 </script>

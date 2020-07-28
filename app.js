@@ -38,21 +38,7 @@ var app = express();
         req.fields = fields;
         req.files = files;
         next();
-      });   
-      
-   }else if (req.method === 'POST') {
-     
-     var form = formidable.IncomingForm({
-        uploadDir:path.join(__dirname, '/public/images'),
-        keepExtensions: true,
-        multiples: true
-      });
-
-      form.parse(req, function(err, fields, files){
-        req.fields = fields;
-        req.files = files;
-        next();
-      });      
+      });     
   }else{
     next();
   }  
