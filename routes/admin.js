@@ -3,6 +3,7 @@ var router = express.Router();
 var users = require('./../inc/users');
 var admin = require('./../inc/admin');
 var menus = require('./../inc/menus');
+var reservations = require('./../inc/reservations');
 var path = require('path');
 var formidable = require('formidable');
 
@@ -133,12 +134,68 @@ router.get('/menus', function(req, res, next) {
   });
 });
 
+/*
+* 
+* Rotinas para o tratamento das reservations
+*/
 router.get('/reservations', function(req, res, next) {
-  
-  res.render('admin/reservations', admin.getParams(req, {date:{}})); 
+
+  reservations.getReservations().then(data=>{
+    res.render('admin/reservations', admin.getParams(req, {
+      data,
+      date:{}
+    })); 
+  });
 
 });
 
+router.post('/reservations', function(req, res, next) {
+  form.parse(req, (err, fields, files) => {
+    if (err) {
+      next(err);
+      return;
+    }else{
+      reservations.save(fields, res).then(results=>{
+          res.send(results);
+      }).catch(e=>{        
+          res.send(e);
+      });  
+    }    
+  });
+ 
+});
+
+router.put('/reservations', function(req, res, next) {
+  
+  form.parse(req, (err, fields, files) => {
+    if (err) {
+      next(err);
+      return;
+    }else{      
+      reservations.update(fields).then(results=>{
+        res.send(results);
+        //console.log(results);
+      }).catch(e=>{
+        //console.log(e);
+        res.send(e);
+      })
+    }
+  }); 
+});
+
+router.delete('/reservations/:id', function(req, res, next) {
+  reservations.delete(req.params.id).then(results=>{
+        res.send(results);
+       // console.log(results);
+      }).catch(e=>{
+       //console.log(e);
+        res.send(e);
+      }) 
+});
+
+/*
+*Rotinas para  o tratamento de users
+ */
 router.get('/users', function(req, res, next) {
   
   res.render('admin/users',admin.getParams(req, {})); 
