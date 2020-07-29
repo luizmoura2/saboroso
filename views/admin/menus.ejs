@@ -102,47 +102,6 @@
       </div>
       <!-- /.modal-dialog -->
     </div>
-
-    <div class="modal fade" id="modal-update">
-      <div class="modal-dialog">
-        <div class="modal-content" style="border-top: 3px solid #00c0ef;">
-          <form method="post">
-            <input type="hidden" name="id">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-              <h4 class="modal-title">Editar Menu</h4>
-            </div>
-            <div class="modal-body">
-              <div class="form-group">
-                <label for="inputTitleUpdate">Título</label>
-                <input type="text" class="form-control" id="inputTitleUpdate" name="title">
-              </div>
-              <div class="form-group">
-                <label for="inputDescriptionUpdate">Descrição</label>
-                <textarea class="form-control" id="inputDescriptionUpdate" name="description"></textarea>
-              </div>
-              <div class="form-group">
-                <label for="inputPriceUpdate">Preço</label>
-                <input type="number" class="form-control" id="inputPriceUpdate" name="price">
-              </div>
-              <div class="form-group">
-                <label for="inputPhotoUpdate">Foto</label>
-                <img style="max-width: 128px; max-height: 128px; display: block;" src="dist/img/boxed-bg.jpg">
-                <input type="file" class="form-control" id="inputPhotoUpdate" name="photo">
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>
-              <button type="submit" class="btn btn-info">Salvar</button>
-            </div>
-          </form>
-        </div>
-        <!-- /.modal-content -->
-      </div>
-      <!-- /.modal-dialog -->
-    </div>
     
 <%- include('./inc/footer') -%>
 

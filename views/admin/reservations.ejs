@@ -63,17 +63,22 @@
                 </tr>
               </thead>
               <tbody>
+                <% data.forEach(function(row){ %>
                 <tr>
-                  <td>1.</td>
-                  <td>Hcode</td>
-                  <td>contato@hcode.com.br</td>
-                  <td>2</td>
-                  <td>1/1/2019</td>
-                  <td>10:30</td>
-                  <td><button type="button" class="btn btn-xs btn-info btn-update" data-toggle="modal" data-target="#modal-update"><i
-                        class="fa fa-pencil"></i> Editar</button>&nbsp;<button type="button" class="btn btn-xs btn-danger btn-delete"><i
+                  <td><%= row.id %></td>
+                  <td><%= row.name %></td>
+                  <td><%= row.email %></td>
+                  <td><%= row.people %></td>
+                  <td><%= row.date %></td>
+                  <td><%= row.time %></td>
+                  <td><button type="button" class="btn btn-xs btn-info btn-update" 
+                        onclick="reservationEdit(this)" data-row='<%= JSON.stringify(row);%>'><i
+                        class="fa fa-pencil"></i> Editar</button>&nbsp;<button type="button" 
+                        class="btn btn-xs btn-danger btn-delete" onclick="reservationDelete(this)" 
+                        data-id="<%=row.id%>" data-title="<%=row.name%>"><i
                         class="fa fa-trash"></i> Excluir</button></td>
                 </tr>
+                <%})%>
               </tbody>
             </table>
           </div>
@@ -99,6 +104,7 @@
       <div class="modal-dialog">
         <div class="modal-content" style="border-top: 3px solid #00a65a;">
           <form method="post">
+            <input type="hidden" class="form-control" id="inputIdUpdate" name="id" value="">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
@@ -145,55 +151,68 @@
       <!-- /.modal-dialog -->
     </div>
 
-    <div class="modal fade" id="modal-update">
-      <div class="modal-dialog">
-        <div class="modal-content" style="border-top: 3px solid #00c0ef;">
-          <form method="post">
-            <input type="hidden" name="id">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-              <h4 class="modal-title">Editar Reserva</h4>
-            </div>
-            <div class="modal-body">
-              <div class="form-group">
-                <label for="inputNameUpdate">Nome</label>
-                <input type="text" class="form-control" id="inputNameUpdate" name="name">
-              </div>
-              <div class="form-group">
-                <label for="inputEmailUpdate">E-mail</label>
-                <input type="email" class="form-control" id="inputEmailUpdate" name="email">
-              </div>
-              <div class="form-group">
-                <label for="inputPeopleUpdate">Pessoas</label>
-                <select id="inputPeopleUpdate" name="people" class="form-control">
-                  <option value=""> -- selecione -- </option>
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                  <option value="4">4</option>
-                  <option value="5">5+</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label for="inputDateUpdate">Data</label>
-                <input type="date" id="inputDateUpdate" name="date" class="form-control">
-              </div>
-              <div class="form-group">
-                <label for="inputTimeUpdate">Hora</label>
-                <input type="time" id="inputTimeUpdate" name="time" class="form-control">
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>
-              <button type="submit" class="btn btn-info">Salvar</button>
-            </div>
-          </form>
-        </div>
-        <!-- /.modal-content -->
-      </div>
-      <!-- /.modal-dialog -->
-    </div>
-
 <%- include('./inc/footer') -%>
+
+<script>
+
+ // new LcomFileReader('#modal-create [type=file]', '#modal-create img');
+
+  let formCreate = document.querySelector('#modal-create form');
+
+  $('#modal-create').on('hidden.bs.modal', e=>{
+    formCreate.querySelector('#inputIdUpdate').value = '';
+    formCreate.querySelector('.modal-title').textContent = 'Nova Reserva';
+    formCreate.reset();
+  });
+  
+  formCreate.addEventListener('submit', e=>{
+    e.preventDefault();  
+    
+    let formData = new FormData(formCreate);
+    let option = {}
+    if (formData.get('id') === ''){
+      option = { method: 'post', body: formData };
+    }else{
+      option = { method: 'put', body: formData  };
+    }
+    
+    fetch('/admin/reservations', option)
+      .then(response=>response.json())
+      .then(json=>{
+        window.location.reload()
+      });
+  });
+
+  reservationEdit =  e =>{
+    formCreate.reset();
+    formCreate.querySelector('.modal-title').textContent = 'Alteração de Reserva';
+    let row = JSON.parse(e.dataset.row);
+    let inputs  = formCreate.querySelectorAll('.form-control');
+    inputs.forEach(input=>{
+      if (input.name != 'photo'){
+        input.value = row[input.name];       
+      }else{
+        formCreate.querySelector('img').src = `/${row['photo']}`;
+      }
+    });    
+   
+    formCreate.setAttribute('method', 'put');    
+    $('#modal-create').modal('show');   
+  }
+
+  reservationDelete = e=>{
+    let id = e.dataset.id;
+    let title = e.dataset.title;
+console.log(' this ', this);
+    option = { method: 'delete'};
+    if (confirm(`Excluir o item do menu: id = ${id} de nome ${title}`)){
+
+      fetch(`/admin/reservations/${id}`, option)
+        .then(response=>response.json())
+        .then(json=>{
+          window.location.reload();
+        });
+    }    
+  };
+
+</script>

@@ -87,7 +87,12 @@ router.post('/reservations', function(req, res, next){
   }
   
   if (err.length === 0){   
-    reservations.save(req.body, res); 
+    reservations.save(req.body, res).then(results=>{
+      reservations.render({}, res, ['Insert succeful', [results]], 'alert-success');
+    }).catch(e=>{
+      reservations.render(req.body, res, e, 'alert-danger');
+    });
+    
   }else{
     reservations.render(req.body, res, err, 'alert-danger');
   }
