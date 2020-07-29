@@ -106,7 +106,7 @@
           
           <form method="post">
             <div class="alert 'alert-danger'"></div>>  
-            <input type="hidden" class="form-control" id="inputIdUpdate" name="id" value="">
+             <input type="hidden" class="form-control" id="inputIdUpdate" name="id" value="">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
@@ -170,6 +170,7 @@
     
     let formData = new FormData(formCreate);
     let option = {}
+
     flg = 0;
     if (formData.get('id') === ''){
       option = { method: 'post', body: formData };
@@ -194,15 +195,13 @@
   });
 
   reservationEdit =  e =>{
-
     formCreate.reset();
     formCreate.querySelector('.modal-title').textContent = 'Alteração de Reserva';
     let row = JSON.parse(e.dataset.row);
     let inputs  = formCreate.querySelectorAll('.form-control');
     inputs.forEach(input=>{
         input.value = row[input.name];       
-    });    
-   
+    });
     formCreate.setAttribute('method', 'put');    
     $('#modal-create').modal('show');   
   }

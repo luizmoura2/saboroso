@@ -91,7 +91,7 @@ router.post('/reservations', function(req, res, next){
       reservations.render({}, res, ['Insert succeful', [results]], 'alert-success');
     }).catch(e=>{
       reservations.render(req.body, res, e, 'alert-danger');
-    });    
+    });
   }else{
     reservations.render(req.body, res, err, 'alert-danger');
   }

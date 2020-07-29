@@ -75,7 +75,7 @@ module.exports = {
                             fields.time,
                             fields.id
                         ];  
-                        console.log(params);       
+                       
             conn.query(query, params, (err, results)=>{
                         if (err){
                             //console.log(err);
