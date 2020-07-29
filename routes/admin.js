@@ -6,6 +6,8 @@ var menus = require('./../inc/menus');
 var reservations = require('./../inc/reservations');
 var path = require('path');
 var formidable = require('formidable');
+var moment = require('moment');
+moment.locale('pt-BR')
 
 var form = formidable.IncomingForm({
             uploadDir:path.join(__dirname, '../public/images'),
@@ -143,7 +145,8 @@ router.get('/reservations', function(req, res, next) {
   reservations.getReservations().then(data=>{
     res.render('admin/reservations', admin.getParams(req, {
       data,
-      date:{}
+      date:{},
+      moment
     })); 
   });
 

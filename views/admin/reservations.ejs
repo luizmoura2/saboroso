@@ -69,7 +69,7 @@
                   <td><%= row.name %></td>
                   <td><%= row.email %></td>
                   <td><%= row.people %></td>
-                  <td><%= row.date %></td>
+                  <td><%= moment(row.date).format('DD [de] MMMM [de] YYYY') %></td>
                   <td><%= row.time %></td>
                   <td><button type="button" class="btn btn-xs btn-info btn-update" 
                         onclick="reservationEdit(this)" data-row='<%= JSON.stringify(row);%>'><i
