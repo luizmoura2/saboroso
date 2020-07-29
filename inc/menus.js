@@ -76,5 +76,23 @@ module.exports = {
                         }
             });
         });
+    },
+    /**
+     * Excluir o registo do menu de identificador id
+     * @param {*} id 
+     */
+    delete(id){
+        return new Promise((resolve, reject)=>{
+            let query = `DELETE FROM tb_menus WHERE id = ?`
+            conn.query(query, [id], (err,results)=>{
+                if (err){
+                    //console.log(err);
+                    reject(err);
+                }else{
+                    //console.log(results);
+                    resolve(results);
+                }
+            })
+        })
     }
 }

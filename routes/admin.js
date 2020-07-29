@@ -105,15 +105,24 @@ router.put('/menus', function(req, res, next) {
       return;
     }else{
       menus.update(fields, files).then(results=>{
-        //res.send(results);
-        console.log(results);
+        res.send(results);
+        //console.log(results);
       }).catch(e=>{
-        console.log(e);
-        //res.send(e);
+        //console.log(e);
+        res.send(e);
       })
     }
-  });
- 
+  }); 
+});
+
+router.delete('/menus/:id', function(req, res, next) {
+      menus.delete(req.params.id).then(results=>{
+        res.send(results);
+       // console.log(results);
+      }).catch(e=>{
+       //console.log(e);
+        res.send(e);
+      }) 
 });
 
 router.get('/menus', function(req, res, next) {
