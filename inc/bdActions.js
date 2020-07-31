@@ -12,8 +12,8 @@ module.exports = {
         });  
     },
 
-    getReservations(){
-        let query = "SELECT * FROM tb_reservations ORDER BY date, time";
+    actionGet(table, order){
+        let query = `SELECT * FROM ${table} ORDER BY ${order}`;
         
         return new Promise((resolve, reject)=>{
         
@@ -33,7 +33,7 @@ module.exports = {
      * @param {*} fields 
      * @param {*} res 
      */
-    save(fields, res){
+    actionSave(fields, res){
 
         if (fields.date.indexOf('/') > -1){
             let dma = fields.date.split('/');
@@ -63,7 +63,7 @@ module.exports = {
      * @param {*} fields 
      * @param {*} files 
      */
-    update(fields){
+    actionUpdate(fields){
         return new Promise((resolve, reject)=>{
                    
             let query = `UPDATE tb_reservations SET name=?, email=?, people=?, date=?, time=? WHERE id=?`;
@@ -91,10 +91,10 @@ module.exports = {
      * Exclui o registro da reserva de identificador id
      * @param {*} id 
      */
-    delete(id){
+    actionDelete(table, id){
         return new Promise((resolve, reject)=>{
-            let query = `DELETE FROM tb_reservations WHERE id = ?`
-            conn.query(query, [id], (err,results)=>{
+            let query = `DELETE FROM ${table} WHERE id = ?`
+            conn.query(query, [id], (err, results)=>{
                 if (err){
                     //console.log(err);
                     reject(err);

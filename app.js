@@ -3,7 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-//var formidable = require('formidable');
+var formidable = require('formidable');
 
 const redis = require('redis');
 const session = require('express-session');
@@ -26,8 +26,8 @@ const { copyFileSync } = require('fs');
 
 var app = express();
 
-/*app.use( (req, res, next)=>{ 
-    if (req.url === 'post'){
+app.use( (req, res, next)=>{ 
+    if (['put', 'PUT', 'POST', 'post'].indexOf(req.method) > -1) {
       var form = formidable.IncomingForm({
         uploadDir:path.join(__dirname, '/public/images'),
         keepExtensions: true,
@@ -43,7 +43,7 @@ var app = express();
     next();
   }  
   
-});*/
+});
 
 
 // view engine setup
@@ -61,7 +61,7 @@ app.use(
 
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+//app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 

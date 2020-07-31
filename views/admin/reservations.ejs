@@ -18,7 +18,7 @@
         <div class="box">
           <div class="box-header">
             <h3 class="box-title">Lista</h3>
-            <a href="#" class="btn btn-xs pull-right btn-success" data-toggle="modal" data-target="#modal-create"><i
+            <a href="#" class="btn btn-xs pull-right btn-success" onclick="actionInsert(this, 'reservations', 'Nova Reserva')"><i
                 class="fa fa-plus"></i>
               Novo</a>
           </div>
@@ -72,9 +72,9 @@
                   <td><%= moment(row.date).format('DD [de] MMMM [de] YYYY') %></td>
                   <td><%= row.time %></td>
                   <td><button type="button" class="btn btn-xs btn-info btn-update" 
-                        onclick="reservationEdit(this)" data-row='<%= JSON.stringify(row);%>'><i
+                        onclick="actionEdit(this, 'reservations', 'Alteração de Reserva')" data-row='<%= JSON.stringify(row);%>'><i
                         class="fa fa-pencil"></i> Editar</button>&nbsp;<button type="button" 
-                        class="btn btn-xs btn-danger btn-delete" onclick="reservationDelete(this)" 
+                        class="btn btn-xs btn-danger btn-delete" onclick="actionDelete(this, 'reservations')" 
                         data-id="<%=row.id%>" data-title="<%=row.name%>"><i
                         class="fa fa-trash"></i> Excluir</button></td>
                 </tr>
@@ -102,16 +102,16 @@
 
     <div class="modal fade" id="modal-create">
       <div class="modal-dialog">
-        <div class="modal-content" style="border-top: 3px solid #00a65a;">
-          
-          <form method="post">
-            <div class="alert 'alert-danger'"></div>>  
+        <div class="modal-content" style="border-top: 3px solid #00a65a;">          
+          <form method="">
+           
              <input type="hidden" class="form-control" id="inputIdUpdate" name="id" value="">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
               <h4 class="modal-title">Nova Reserva</h4>
+              <div id="alert" class="alert"></div>
             </div>
             <div class="modal-body">
               <div class="form-group">
@@ -144,7 +144,7 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>
-              <button type="submit" class="btn btn-success">Salvar</button>
+              <button type="button" onclick="actionSubmit(this)" class="btn btn-success">Salvar</button>
             </div>
           </form>
         </div>
@@ -155,69 +155,5 @@
 
 <%- include('./inc/footer') -%>
 
-<script>
-
-  let formCreate = document.querySelector('#modal-create form');
-
-  $('#modal-create').on('hidden.bs.modal', e=>{
-    formCreate.querySelector('#inputIdUpdate').value = '';
-    formCreate.querySelector('.modal-title').textContent = 'Nova Reserva';
-    formCreate.reset();
-  });
-  
-  formCreate.addEventListener('submit', e=>{
-    e.preventDefault();  
-    
-    let formData = new FormData(formCreate);
-    let option = {}
-
-    flg = 0;
-    if (formData.get('id') === ''){
-      option = { method: 'post', body: formData };
-    }else{
-      option = { method: 'put', body: formData  };
-      for(var [campo, vlr] of formData){
-         if (vlr === ''){
-           alert(`O campo '${campo}', não pode ser nulo!`);
-           flg++;
-         }
-      }
-    }
-    if ( flg === 0 ){
-      fetch('/admin/reservations', option)
-        .then(response=>response.json())
-        .then(json=>{       
-          window.location.reload()
-        }).catch(e=>{
-          console.log(e);
-        });
-    }
-  });
-
-  reservationEdit =  e =>{
-    formCreate.reset();
-    formCreate.querySelector('.modal-title').textContent = 'Alteração de Reserva';
-    let row = JSON.parse(e.dataset.row);
-    let inputs  = formCreate.querySelectorAll('.form-control');
-    inputs.forEach(input=>{
-        input.value = row[input.name];       
-    });
-    formCreate.setAttribute('method', 'put');    
-    $('#modal-create').modal('show');   
-  }
-
-  reservationDelete = e=>{
-    let id = e.dataset.id;
-    let title = e.dataset.title;
-    option = { method: 'delete'};
-    if (confirm(`Excluir o item do menu: id = ${id} de nome ${title}`)){
-
-      fetch(`/admin/reservations/${id}`, option)
-        .then(response=>response.json())
-        .then(json=>{
-          window.location.reload();
-        });
-    }    
-  };
-
-</script>
+<script src="/js/moment.min.js"></script>
+<script src="/js/lcomAction.js"></script>
