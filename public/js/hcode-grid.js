@@ -53,10 +53,9 @@ class HcodeGride{
                             if (input){
                                 input.value = data[name];
                             }
-                    }                
-                   
+                    }             
                 }
-
+               
               $('#modal-create').modal('show')  ;
             })
         });
