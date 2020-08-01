@@ -18,8 +18,9 @@
         <div class="box">
           <div class="box-header">
             <h3 class="box-title">Lista</h3>
-            <a href="#" class="btn btn-xs pull-right btn-success" data-toggle="modal" data-target="#modal-create"><i
-                class="fa fa-plus"></i> Novo</a>
+            <button type="button" class="btn btn-xs pull-right btn-success btn-insert" 
+                  data-aux='{"screen":"menus","title":"Novo Menu", , "hidden":"idc"}'>
+                <i class="fa fa-plus"></i> Novo</button>
           </div>
           <!-- /.box-header -->
           <div class="box-body no-padding">
@@ -43,12 +44,11 @@
                     <td><%= row.description %></td>
                     <td><%= row.price %></td>
                     <td><button type="button" id="edit" class="btn btn-xs btn-info btn-update"
-                          onclick="menuEdit(this)" data-row='<%= JSON.stringify(row);%>'><i
-                          class="fa fa-pencil"></i> Editar</button>&nbsp;<button type="button" 
+                      data-row='<%= JSON.stringify(row);%>' data-aux='{"screen":"menus","title":"Alteração de Reserva", "hidden":"idc"}'>
+                        <i class="fa fa-pencil"></i> Editar</button>&nbsp;<button type="button" 
                           class="btn btn-xs btn-danger btn-delete" 
-                          onclick="menuDelete(this)" data-id="<%=row.id%>"
-                          data-title="<%=row.title%>"><i
-                          class="fa fa-trash" ></i> Excluir</button></td>
+                          data-aux='{"id":<%=row.id%>, "screen":"menus", "title":"<%=row.title%>"}'>
+                          <i class="fa fa-trash" ></i> Excluir</button></td>
                   </tr>
                 <%})%>
               </tbody>
@@ -76,7 +76,7 @@
               <div class="form-group">
                 <label for="inputTitleCreate">Título</label>
                 <input type="text" class="form-control" id="inputTitleCreate" name="title">
-                <input type="hidden" class="form-control" id="inputIdUpdate" name="id" value="">
+                <input type="hidden" class="form-control" id="idc" name="id" value="">
               </div>
               <div class="form-group">
                 <label for="inputDescriptionCreate">Descrição</label>
@@ -94,7 +94,7 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>
-              <button type="submit" class="btn btn-success">Salvar</button>
+              <button type="submit" class="btn btn-success btn-submit">Salvar</button>
             </div>
           </form>
         </div>
@@ -106,65 +106,9 @@
 <%- include('./inc/footer') -%>
 
 <script src='/js/LcomFileReader.js'></script>
+<script src="/js/lcomFormSave.js"></script>
+<script src="/js/hcod-grid.js"></script>
 <script>
-
   new LcomFileReader('#modal-create [type=file]', '#modal-create img');
-
-  let formCreate = document.querySelector('#modal-create form');
-
-  $('#modal-create').on('hidden.bs.modal', e=>{
-    formCreate.querySelector('#inputIdUpdate').value = '';
-    formCreate.reset();
-  });
-  
-  formCreate.addEventListener('submit', e=>{
-    e.preventDefault();  
-    
-    let formData = new FormData(formCreate);
-    let option = {}
-    if (formData.get('id') === ''){
-      option = { method: 'post', body: formData };
-    }else{
-      option = { method: 'put', body: formData  };
-    }
-    
-    fetch('/admin/menus', option)
-      .then(response=>response.json())
-      .then(json=>{
-        window.location.reload()
-      });
-  });
-
-  menuEdit =  e =>{
-    formCreate.reset();
-    let row = JSON.parse(e.dataset.row);
-    let inputs  = formCreate.querySelectorAll('.form-control');
-    inputs.forEach(input=>{
-      if (input.name != 'photo'){
-        input.value = row[input.name];       
-      }else{
-        formCreate.querySelector('img').src = `/${row['photo']}`;
-      }
-    });    
-   
-    formCreate.setAttribute('method', 'put');
-    $('#modal-create').modal('show');   
-  }
-
-  menuDelete = e=>{
-    let id = e.dataset.id;
-    let title = e.dataset.title;
-
-    option = { method: 'delete'};
-    if (confirm(`Excluir o item do menu: ${title}`)){
-
-      fetch(`/admin/menus/${id}`, option)
-        .then(response=>response.json())
-        .then(json=>{
-          window.location.reload();
-        });
-    }
-    
-  };
-
+  new HcodGrid({});
 </script>

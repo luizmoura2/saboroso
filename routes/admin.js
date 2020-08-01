@@ -152,7 +152,12 @@ router.get('/reservations', function(req, res, next) {
 });
 
 router.post('/reservations', function(req, res, next) {
-      reservations.save(req.fields, res).then(results=>{
+  let fields = req.fields;
+  if (fields.date.indexOf('/') > -1){
+    let dma = fields.date.split('/');
+    fields.date = `${dma[2]}-${dma[1]}-${dma[0]}]`;
+  }
+  reservations.save(fields, res).then(results=>{
           res.send(results);
       }).catch(e=>{        
           res.send(e);
@@ -160,7 +165,7 @@ router.post('/reservations', function(req, res, next) {
 });
 
 router.put('/reservations', function(req, res, next) {
-      reservations.update(req.fields).then(results=>{
+  reservations.update(req.fields).then(results=>{
         res.send(results);
       }).catch(e=>{
         res.send(e);
@@ -179,15 +184,55 @@ router.delete('/reservations/:id', function(req, res, next) {
 *Rotinas para  o tratamento de users
  */
 router.get('/users', function(req, res, next) {
-  
-  res.render('admin/users',admin.getParams(req, {})); 
+  bdAction.actionGet('tb_users', 'name').then(data=>{
+    res.render('admin/users', admin.getParams(req, {
+      data     
+    })); 
+  });
+});
+
+router.post('/users', function(req, res, next) {
+  bdAction.actionSave(req.fields, 'tb_users').then(results=>{
+      res.send(results);
+  }).catch(e=>{        
+      res.send(e);
+  }); 
 
 });
 
-router.get('/emails', function(req, res, next) {
-  
-  res.render('admin/emails',admin.getParams(req, {})); 
+router.put('/users/pw', function(req, res, next) {
+  bdAction.actionUpdate(req.fields, 'tb_users').then(results=>{
+      res.send(results);
+    }).catch(e=>{
+      console.log(e);
+      res.send(e);
+    });
+});
 
+router.put('/users', function(req, res, next) {
+  bdAction.actionUpdate(req.fields, 'tb_users').then(results=>{
+      res.send(results);
+    }).catch(e=>{
+      console.log(e);
+      res.send(e);
+    });
+});
+
+router.delete('/users/:id', function(req, res, next) {
+  bdAction.actionDelete('tb_users', req.params.id).then(results=>{
+        res.send(results);
+      }).catch(e=>{
+        res.send(e);
+      }) 
+});
+
+/*Procedimento para tratamento de emails */
+router.get('/emails', function(req, res, next) {
+  bdAction.actionGet('tb_emails', 'name').then(data=>{
+    res.render('admin/emails',admin.getParams(req, {
+      data     
+    })); 
+  });
 });
   
 module.exports = router;

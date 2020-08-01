@@ -19,7 +19,9 @@
     <div class="box">
         <div class="box-header">
             <h3 class="box-title">Lista</h3>
-            <a href="#" class="btn btn-xs pull-right btn-success" data-toggle="modal" data-target="#modal-create"><i class="fa fa-plus"></i> Novo</a>
+            <button type="button" class="btn btn-xs pull-right btn-success btn-insert" 
+                  data-aux='{"screen":"users", "title":"Novo Usuario", "hidden":"idc", "target":"modal-create"}'>
+                <i class="fa fa-plus"></i> Novo</button>
         </div>
         <!-- /.box-header -->
         <div class="box-body no-padding">
@@ -33,16 +35,26 @@
                   </tr>
                 </thead>
                 <tbody>
+                  <% data.forEach(function(row){ %>
                     <tr>
-                        <td>1.</td>
-                        <td>Hcode</td>
-                        <td>contato@hcode.com.br</td>
+                        <td><%= row.id%></td>
+                        <td><%= row.name%></td>
+                        <td><%= row.email%></td>
                         <td>
-                            <button type="button" class="btn btn-xs btn-info" data-toggle="modal" data-target="#modal-update"><i class="fa fa-pencil"></i> Editar</button>&nbsp;
-                            <button type="button" class="btn btn-xs btn-warning btn-update" data-toggle="modal" data-target="#modal-update-password">
-                                <i class="fa fa-lock"></i> Alterar Senha</button>&nbsp;
-                            <button type="button" class="btn btn-xs btn-danger btn-delete"><i class="fa fa-trash"></i> Excluir</button></td>
+                            <button type="button" class="btn btn-xs btn-info btn-update" data-row='<%= JSON.stringify(row);%>' 
+                            data-aux='{"screen":"users","title":"Alterar Usuário", "hidden":"idc", "target":"modal-create"}'>
+                            <i class="fa fa-pencil"></i> Editar</button>&nbsp;
+                      
+                            <button type="button" class="btn btn-xs btn-warning btn-password"
+                            data-aux='{"id":"<%=row.id%>", "screen":"users/pw", "title":"Alterar Senha", 
+                                            "target":"modal-update-password", "hidden":"idp"}'>
+                            <i class="fa fa-lock"></i> Alterar Senha</button>&nbsp;
+                
+                            <button type="button" class="btn btn-xs btn-danger btn-delete"
+                            data-aux='{"id":"<%=row.id%>", "screen":"users", "title":"<%=row.name%>"}'>
+                            <i class="fa fa-trash"></i> Excluir</button></td>
                     </tr>
+                    <% }) %>
                 </tbody>
             </table>
         </div>
@@ -57,13 +69,14 @@
   <div class="modal fade" id="modal-update-password">
     <div class="modal-dialog">
       <div class="modal-content" style="border-top: 3px solid #f39c12;">
-        <form method="post">
-          <input type="hidden" name="id">
+        <form method="post" id="update">
+          <input type="hidden" class="form-control input-id" id="idp" name="id" value="0">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
             <h4 class="modal-title">Alterar Senha</h4>
+            <div id="alert" class="alert"></div>
           </div>
           <div class="modal-body">
             <div class="form-group">
@@ -77,7 +90,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>
-            <button type="submit" class="btn btn-warning">Salvar</button>
+            <button type="button" class="btn btn-warning btn-submitPw">Salvar</button>
           </div>
         </form>
       </div>
@@ -89,12 +102,14 @@
   <div class="modal fade" id="modal-create">
     <div class="modal-dialog">
       <div class="modal-content" style="border-top: 3px solid #00a65a;">
-        <form method="post">
+        <form method="post" id="create">
+          <input type="hidden" class="form-control input-id" id ="idc" name="id" value="0">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
             <h4 class="modal-title">Nova Usuário</h4>
+            <div id="alert" class="alert"></div>
           </div>
           <div class="modal-body">
             <div class="form-group">
@@ -112,39 +127,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>
-            <button type="submit" class="btn btn-success">Salvar</button>
-          </div>
-        </form>
-      </div>
-      <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-  </div>
-  
-  <div class="modal fade" id="modal-update">
-    <div class="modal-dialog">
-      <div class="modal-content" style="border-top: 3px solid #00c0ef;">
-        <form method="post">
-          <input type="hidden" name="id">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-            <h4 class="modal-title">Editar Usuário</h4>
-          </div>
-          <div class="modal-body">
-            <div class="form-group">
-              <label for="inputNameUpdate">Nome</label>
-              <input type="text" class="form-control" id="inputNameUpdate" name="name">
-            </div>
-            <div class="form-group">
-              <label for="inputEmailUpdate">E-mail</label>
-              <input type="email" class="form-control" id="inputEmailUpdate" name="email">
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>
-            <button type="submit" class="btn btn-info">Salvar</button>
+            <button type="submit" class="btn btn-success btn-submit">Salvar</button>
           </div>
         </form>
       </div>
@@ -154,3 +137,9 @@
   </div>
 
 <%- include('./inc/footer') -%>
+<script src='/js/LcomFileReader.js'></script>
+<script src="/js/lcomFormSave.js"></script>
+<script src="/js/hcod-grid.js"></script>
+<script>
+  new HcodGrid({});
+</script>

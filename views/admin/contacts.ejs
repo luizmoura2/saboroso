@@ -41,7 +41,8 @@
                   <td><%= row.email %></td>
                   <td><%= row.message %></td>
                   <td><button type="button" class="btn btn-xs btn-danger btn-delete"
-                    onclick="actionDelete(this, 'contacts')" data-id="<%= row.id %>" data-title="<%= row.name %>"
+                    onclick="actionDelete(this, 'contacts')" 
+                    data-aux='{"id":<%=row.id%>, "screen":"contacts", "title":"<%=row.name%>"}'
                     ><i class="fa fa-trash"></i> Excluir</button></td>
                 </tr>
                 <% })%>
@@ -57,31 +58,8 @@
     <!-- /.content-wrapper -->
 
 <%- include('./inc/footer') -%>
+<script src="/js/lcomFormSave.js"></script>
+<script src="/js/hcod-grid.js"></script>
 <script>
-// To make Pace works on Ajax calls
-$(document).ajaxStart(function () {
-    Pace.restart()
-  })
-  $('.ajax').click(function () {
-    $.ajax({
-      url: '#', success: function (result) {
-        $('.ajax-content').html('<hr>Ajax Request Completed !')
-      }
-    })
-  })
-
-
-  actionDelete = (btn, acao)=>{  
-      let id = btn.dataset.id;
-      let title = btn.dataset.title;
-      option = { method: 'delete' };
-      if (confirm(`Excluir o item ${acao}: id = ${id} de nome ${title}`)){
-
-        fetch(`/admin/${acao}/${id}`, option)
-          .then(response=>response.json())
-          .then(json=>{
-            window.location.reload();
-          });
-      }    
-    }; 
-  </script>
+  new HcodGrid({});
+</script>

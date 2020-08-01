@@ -28,26 +28,38 @@ module.exports = {
             });
         });
     },
+
+    /**
+     * Monta os arrary de parametros e valores
+     * nas variáveis globais: this.value e this.params, para 
+     * inserção de dados no Banco
+     * @param {object} fields Os campos e os valores 
+     * a serem transformados nas tuplas da tabela
+     */
+    assemblerInsert(fields){
+        this.tuplas = [];
+        this.params = []; 
+        this.interr = [];
+        for(var key in fields){
+            if (key !== 'id'){
+                this.tuplas.push(key);
+                this.params.push(fields[key]);
+                this.interr.push('?')
+            }            
+        }
+    },
+
     /**
      * Salva o registro de reserva em Banco de dados
-     * @param {*} fields 
-     * @param {*} res 
+     * @param {object} fields Os campos a serem inseridos
+     * @param {string} table O nome da tabela onde haverá a inserção
      */
-    actionSave(fields, res){
-
-        if (fields.date.indexOf('/') > -1){
-            let dma = fields.date.split('/');
-            fields.date = `${dma[2]}-${dma[1]}-${dma[0]}]`;
-        }
-        let query = `INSERT INTO tb_reservations(name, email, people, date, time) VALUES (?, ?, ?, ?, ?)`;
-        let params =  [
-                        fields.name,
-                        fields.email,
-                        fields.people,
-                        fields.date,
-                        fields.time          
-                    ];
-        //console.log('save', params);
+    actionSave(fields, table){
+        this.assemblerInsert(fields);
+                
+        let query = `INSERT INTO ${table}(${this.tuplas.join()}) VALUES (${this.interr.join()})`;
+        let params = this.params;
+        
         return new Promise((resolve, reject)=>{
             conn.query(query, params, (error, result)=>{
                 if (error){
@@ -58,48 +70,56 @@ module.exports = {
             });
         });
     },
+
+    assemblerUpdate(fields){
+        this.keys = [];
+        this.vals = [];
+        let id = '';
+        for(var key in fields){
+         if (key !== 'passwordConfirm'){
+            if (key === 'id'){
+                id = fields[key]
+            }else{
+                this.keys.push(key+'=?');
+                this.vals.push(fields[key]);
+            }
+            
+          }
+        }
+        this.vals.push(id);
+    },
     /**
      * Atualiza o registro de reserva no Banco de dados
-     * @param {*} fields 
-     * @param {*} files 
+     * @param {object} fields Os campos com o Id, a serem alterados
+     * @param {*} table O nome da tabela onde haverá a atualização
      */
-    actionUpdate(fields){
+    actionUpdate(fields, table){
         return new Promise((resolve, reject)=>{
-                   
-            let query = `UPDATE tb_reservations SET name=?, email=?, people=?, date=?, time=? WHERE id=?`;
-            let params = [
-                            fields.name,
-                            fields.email,
-                            fields.people,
-                            fields.date,
-                            fields.time,
-                            fields.id
-                        ];  
-            //console.log('update', params);        
+            this.assemblerUpdate(fields);
+            let query = `UPDATE ${table} SET ${this.keys.join()} WHERE id=?`;
+            let params = this.vals;
             conn.query(query, params, (err, results)=>{
-                        if (err){
-                            //console.log(err);
-                            reject(err);
-                        }else{
-                            //console.log(results);
-                            resolve(results);
-                        }
+                if (err){
+                    reject(err);
+                }else{                   
+                    resolve(results);
+                }
             });
         });
     },
+
     /**
      * Exclui o registro da reserva de identificador id
-     * @param {*} id 
+     * @param {string} table O nome da tabela 
+     * @param {string} id O id do resitro a ser excluido
      */
     actionDelete(table, id){
         return new Promise((resolve, reject)=>{
             let query = `DELETE FROM ${table} WHERE id = ?`
             conn.query(query, [id], (err, results)=>{
                 if (err){
-                    //console.log(err);
                     reject(err);
                 }else{
-                    //console.log(results);
                     resolve(results);
                 }
             })
