@@ -16,13 +16,15 @@
       <section class="content container-fluid">
 
         <div class="box">
+          
           <div class="box-header">
             <h3 class="box-title">Lista</h3>
             <button type="button" class="btn btn-xs pull-right btn-success btn-insert" 
-              data-aux='{"screen":"reservations","title":"Nova Reserva", "hidden":"idc"}'>
+              data-aux='{"screen":"reservations","title":"Nova Reserva", "hidden":"idc", "target":"modal-create"}'>
               <i class="fa fa-plus"></i> Novo</button>
             
           </div>
+       
           <div class="box-header" style="height:44px;">
 
             <div class="box-tools">
@@ -73,7 +75,8 @@
                   <td><%= moment(row.date).format('DD [de] MMMM [de] YYYY') %></td>
                   <td><%= row.time %></td>
                   <td><button type="button" class="btn btn-xs btn-info btn-update" 
-                        data-row='<%= JSON.stringify(row);%>' data-aux='{"screen":"reservations","title":"Alteração de Reserva"}'>
+                        data-row='<%= JSON.stringify(row);%>' 
+                        data-aux='{"screen":"reservations","title":"Alteração de Reserva", "hidden":"idc", "target":"modal-create"}'
                         <i class="fa fa-pencil"></i> Editar</button>&nbsp;<button type="button" 
                         class="btn btn-xs btn-danger btn-delete" 
                         data-aux='{"id":<%=row.id%>, "screen":"reservations", "title":"<%=row.name%>", "hidden":"idc"}'>
@@ -104,9 +107,9 @@
     <div class="modal fade" id="modal-create">
       <div class="modal-dialog">
         <div class="modal-content" style="border-top: 3px solid #00a65a;">          
-          <form method="">
+          <form method="" id="create">
            
-             <input type="hidden" class="form-control" id="inputIdUpdate" name="id" value="">
+             <input type="hidden" class="form-control" id="idc" name="id" value="">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>

@@ -10,13 +10,6 @@ var formidable = require('formidable');
 var moment = require('moment');
 moment.locale('pt-BR')
 
-/*var form = formidable.IncomingForm({
-            uploadDir:path.join(__dirname, '../public/images'),
-            keepExtensions: true,
-            multiples: true
-});*/
-
-
 router.use(function(req, res, next){
 
   if ( ['/login'].indexOf(req.url) === -1 && !req.session.user ){
@@ -99,8 +92,12 @@ router.delete('/contacts/:id', function(req, res, next) {
 
 /* Procedimento para Menus*/
 router.post('/menus', function(req, res, next) {
-
-      menus.save(req.fields, req.files).then(results=>{
+  
+  let fields = req.fields;
+  let files = req.files;
+  fields.photo = `images/${path.parse(files.photo.path).base}`;
+  //menus.save(req.fields, req.files).then(results=>{
+  bdAction.actionSave(fields, 'tb_menus').then(results=>{      
         res.send(results);
       }).catch(e=>{
         res.send(e);
@@ -108,8 +105,8 @@ router.post('/menus', function(req, res, next) {
 });
 
 router.put('/menus', function(req, res, next) {
-  
-      menus.update(req.fields, req.files).then(results=>{
+
+  bdAction.actionUpdate(req.fields, 'tb_menus').then(results=>{        
         res.send(results);
         
       }).catch(e=>{
@@ -120,7 +117,8 @@ router.put('/menus', function(req, res, next) {
 });
 
 router.delete('/menus/:id', function(req, res, next) {
-      menus.delete(req.params.id).then(results=>{
+  //menus.delete(req.params.id).then(results=>{
+  bdAction.actionDelete('tb_menus', req.params.id).then(results=>{ 
         res.send(results);
       
       }).catch(e=>{
@@ -130,7 +128,8 @@ router.delete('/menus/:id', function(req, res, next) {
 });
 
 router.get('/menus', function(req, res, next) {
-  menus.getMenus().then(data=>{
+  //menus.getMenus().then(data=>{
+  bdAction.actionGet('tb_menus', 'title').then(data=>{
     res.render('admin/menus', admin.getParams(req, {
       data
     })); 
@@ -228,11 +227,19 @@ router.delete('/users/:id', function(req, res, next) {
 
 /*Procedimento para tratamento de emails */
 router.get('/emails', function(req, res, next) {
-  bdAction.actionGet('tb_emails', 'name').then(data=>{
+  bdAction.actionGet('tb_emails', 'email').then(data=>{
     res.render('admin/emails',admin.getParams(req, {
       data     
     })); 
   });
 });
   
+router.delete('/emails/:id', function(req, res, next) {
+  bdAction.actionDelete('tb_emails', req.params.id).then(results=>{
+        res.send(results);
+    }).catch(e=>{
+      res.send(e);
+    }) 
+});
+
 module.exports = router;

@@ -33,34 +33,42 @@ class HcodGrid{
     initButtons(){
         let form = document.querySelectorAll('form');        
         let btns = document.querySelectorAll('button');
-        form.forEach(frm=>{    
-            let frmId = frm.getAttribute('id');        
+        form.forEach(frm=>{  
+            console.log(frm);   
+            let frmId = frm.getAttribute('id');
+           // let btns = frm.querySelectorAll('button');
             btns.forEach(btn=>{
                 
                 if (btn.classList.contains('btn-insert') && frmId === 'create'){
                     this.alert = frm.querySelector('#alert');
                     this.actionInsert(btn, frm);
+                    console.log(frm);
                 }
                 
                 if (btn.classList.contains('btn-update')){ 
-                    this.actionUpdate(btn, frm); 
+                    this.actionUpdate(btn, frm);
+                    
                 };
 
                 if (btn.classList.contains('btn-password')){
-                    this.updatePw(btn, frm);                    
+                    this.updatePw(btn, frm); 
+                                 
                 }
 
                 if (btn.classList.contains('btn-delete')){
                     this.actionDelete(btn, frm);
+                    
                 }
                 
                 if (btn.classList.contains('btn-submit')){
                     this.actionSubmit(btn, frm);
                     this.btnSave = btn;
+                    
                 }
 
                 if (btn.classList.contains('btn-submitPw')){
-                    this.actionSubmit(btn, frm);                   
+                    this.actionSubmit(btn, frm); 
+                                     
                 }
                                 
             });
@@ -117,6 +125,7 @@ class HcodGrid{
     };
     
     actionInsert =  (btn, frm) =>{
+        console.log(frm);
         btn.addEventListener('click', e=>{
             let inpt = frm.querySelector('#inputPasswordCreate');
             if (inpt){
@@ -172,7 +181,7 @@ class HcodGrid{
         }); 
     };
 
-    actionDelete = (btn, frm)=>{ 
+    actionDelete = (btn)=>{ 
         //console.log(btn, frm); 
         btn.addEventListener('click', e=>{
             let aux = JSON.parse(btn.dataset.aux);

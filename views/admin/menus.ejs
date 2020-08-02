@@ -19,7 +19,7 @@
           <div class="box-header">
             <h3 class="box-title">Lista</h3>
             <button type="button" class="btn btn-xs pull-right btn-success btn-insert" 
-                  data-aux='{"screen":"menus","title":"Novo Menu", , "hidden":"idc"}'>
+               data-aux='{"screen":"menus","title":"Novo Menu", "hidden":"idc", "target":"modal-create"}'>
                 <i class="fa fa-plus"></i> Novo</button>
           </div>
           <!-- /.box-header -->
@@ -44,10 +44,11 @@
                     <td><%= row.description %></td>
                     <td><%= row.price %></td>
                     <td><button type="button" id="edit" class="btn btn-xs btn-info btn-update"
-                      data-row='<%= JSON.stringify(row);%>' data-aux='{"screen":"menus","title":"Alteração de Reserva", "hidden":"idc"}'>
+                      data-row='<%= JSON.stringify(row);%>' 
+                      data-aux='{"screen":"menus","title":"Alteração de Reserva", "hidden":"idc", "target":"modal-create"}'>
                         <i class="fa fa-pencil"></i> Editar</button>&nbsp;<button type="button" 
                           class="btn btn-xs btn-danger btn-delete" 
-                          data-aux='{"id":<%=row.id%>, "screen":"menus", "title":"<%=row.title%>"}'>
+                          data-aux='{"id":"<%=row.id%>", "screen":"menus", "title":"<%=row.title%>"}'>
                           <i class="fa fa-trash" ></i> Excluir</button></td>
                   </tr>
                 <%})%>
@@ -65,7 +66,7 @@
     <div class="modal fade" id="modal-create">
       <div class="modal-dialog">
         <div class="modal-content" style="border-top: 3px solid #00a65a;">
-          <form method="post">
+          <form method="post" id="create">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>

@@ -23,6 +23,7 @@
           </div>
           <!-- /.box-header -->
           <div class="box-body no-padding">
+            <form id="contacts">
             <table class="table table-striped table-hover">
               <thead>
                 <tr>
@@ -41,13 +42,13 @@
                   <td><%= row.email %></td>
                   <td><%= row.message %></td>
                   <td><button type="button" class="btn btn-xs btn-danger btn-delete"
-                    onclick="actionDelete(this, 'contacts')" 
-                    data-aux='{"id":<%=row.id%>, "screen":"contacts", "title":"<%=row.name%>"}'
-                    ><i class="fa fa-trash"></i> Excluir</button></td>
+                    data-aux='{"id":"<%=row.id%>", "screen":"contacts", "title":"<%=row.name%>"}'>
+                    <i class="fa fa-trash"></i> Excluir</button></td>
                 </tr>
                 <% })%>
               </tbody>
             </table>
+            </form>
           </div>
           <!-- /.box-body -->
         </div>

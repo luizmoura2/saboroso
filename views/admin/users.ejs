@@ -37,9 +37,9 @@
                 <tbody>
                   <% data.forEach(function(row){ %>
                     <tr>
-                        <td><%= row.id%></td>
-                        <td><%= row.name%></td>
-                        <td><%= row.email%></td>
+                        <td><%= row.id %></td>
+                        <td><%= row.name %></td>
+                        <td><%= row.email %></td>
                         <td>
                             <button type="button" class="btn btn-xs btn-info btn-update" data-row='<%= JSON.stringify(row);%>' 
                             data-aux='{"screen":"users","title":"Alterar Usuário", "hidden":"idc", "target":"modal-create"}'>

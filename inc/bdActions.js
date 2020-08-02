@@ -11,8 +11,13 @@ module.exports = {
             clazz: clazz
         });  
     },
-
+    /**
+     * Busca todos os registro da tabela <table> 
+     * @param {string} table O nome da tabela <string>
+     * @param {string} order O campos de ordenação da busca *string
+     */
     actionGet(table, order){
+        console.log(table, order);
         let query = `SELECT * FROM ${table} ORDER BY ${order}`;
         
         return new Promise((resolve, reject)=>{
@@ -56,10 +61,10 @@ module.exports = {
      */
     actionSave(fields, table){
         this.assemblerInsert(fields);
-                
+             
         let query = `INSERT INTO ${table}(${this.tuplas.join()}) VALUES (${this.interr.join()})`;
         let params = this.params;
-        
+    
         return new Promise((resolve, reject)=>{
             conn.query(query, params, (error, result)=>{
                 if (error){
@@ -71,6 +76,13 @@ module.exports = {
         });
     },
 
+    /**
+     * Monta os arrary de parametros e valores
+     * nas variáveis globais: this.value e this.params, para 
+     * inserção de dados no Banco
+     * @param {object} fields Os campos e os valores 
+     * a serem transformados nas tuplas da tabela
+     */
     assemblerUpdate(fields){
         this.keys = [];
         this.vals = [];
@@ -98,6 +110,7 @@ module.exports = {
             this.assemblerUpdate(fields);
             let query = `UPDATE ${table} SET ${this.keys.join()} WHERE id=?`;
             let params = this.vals;
+            console.log(query, params);
             conn.query(query, params, (err, results)=>{
                 if (err){
                     reject(err);
