@@ -1,4 +1,6 @@
 const conn = require('./../inc/db');
+let Pagination = require('./../inc/Pagination');
+const { get } = require('../routes/admin');
 
 module.exports = {
 
@@ -11,27 +13,79 @@ module.exports = {
             clazz: clazz
         });  
     },
+
+    actionPagination(table, order, req){
+        return new Promise((resolve, reject)=>{
+       
+            let page = req.query.page;        
+            if (!page) page = 1;
+
+            let pag = new Pagination(table, order, req);
+
+            pag.getPage(page).then(data=>{
+                resolve({
+                    data,
+                    ttlPag: pag.getTtlPag(),
+                    curPag: pag.getCurPag(),
+                    links: pag.getNav(req.query)
+                })
+            });
+        });
+    },
+
+    actionPage(table, order, page){
+        let regPPag = '10';
+        let initPag = regPPag*page;
+        let query = [];  
+        let params = []; 
+        
+       // console.log(typeof page, page) 
+
+        if (page>-1){
+            
+            query.push(`SELECT * FROM ${table} ORDER BY ${order} LIMIT ${initPag}, ${regPPag} `); 
+            query.push(` SELECT count(*) AS ttlReg FROM ${table}`);
+            params = [
+                table,
+                order,
+                initPag,
+                regPPag,
+                table
+            ];
+        }else{
+            query.push(`SELECT * FROM ${table} ORDER BY ${order}`);
+            query.push(` SELECT count(*) AS ttlReg FROM ${table}`);
+            params = [
+                table,
+                order
+            ];
+        }
+        
+        return {
+            query,
+            params
+        }
+    
+    },       
+
+        
     /**
      * Busca todos os registro da tabela <table> 
      * @param {string} table O nome da tabela <string>
      * @param {string} order O campos de ordenação da busca *string
      */
-    actionGet(table, order){
-        console.log(table, order);
-        let query = `SELECT * FROM ${table} ORDER BY ${order}`;
-        
-        return new Promise((resolve, reject)=>{
-        
-            conn.query(query, (err, result)=>{
-                
+    actionGet(table, order, req){
+        let query = `SELECT * FROM ${table} ORDER BY ${order}`;     
+        return new Promise((resolve, reject)=>{            
+            conn.query(query, (err, result)=>{                
                 if (err){
+                    console.log(err);
                     reject(err);
+                }else{  
+                    resolve(result); 
                 }
-                    
-                resolve(result);
-                
             });
-        });
+        });       
     },
 
     /**

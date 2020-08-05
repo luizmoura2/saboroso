@@ -2,8 +2,8 @@ var express = require('express');
 var router = express.Router();
 var users = require('./../inc/users');
 var admin = require('./../inc/admin');
-var menus = require('./../inc/menus');
-var reservations = require('./../inc/reservations');
+//var menus = require('./../inc/menus');
+//var reservations = require('./../inc/reservations');
 var bdAction = require('./../inc/bdActions');
 var path = require('path');
 var formidable = require('formidable');
@@ -96,7 +96,7 @@ router.post('/menus', function(req, res, next) {
   let fields = req.fields;
   let files = req.files;
   fields.photo = `images/${path.parse(files.photo.path).base}`;
-  //menus.save(req.fields, req.files).then(results=>{
+  
   bdAction.actionSave(fields, 'tb_menus').then(results=>{      
         res.send(results);
       }).catch(e=>{
@@ -117,7 +117,7 @@ router.put('/menus', function(req, res, next) {
 });
 
 router.delete('/menus/:id', function(req, res, next) {
-  //menus.delete(req.params.id).then(results=>{
+  
   bdAction.actionDelete('tb_menus', req.params.id).then(results=>{ 
         res.send(results);
       
@@ -128,7 +128,7 @@ router.delete('/menus/:id', function(req, res, next) {
 });
 
 router.get('/menus', function(req, res, next) {
-  //menus.getMenus().then(data=>{
+  
   bdAction.actionGet('tb_menus', 'title').then(data=>{
     res.render('admin/menus', admin.getParams(req, {
       data
@@ -141,11 +141,22 @@ router.get('/menus', function(req, res, next) {
 * Rotinas para o tratamento das reservations
 */
 router.get('/reservations', function(req, res, next) {
-  reservations.getReservations().then(data=>{
+  let start = (req.query.start) ? req.query.start : moment().subtract(1, 'year').format('YYYY-MM-DD');
+  let end = (req.query.end) ? req.query.end : moment().format('YYYY-MM-DD');
+  //bdAction.actionGet('tb_reservations', 'name', req).then(data=>{ 
+    bdAction.actionPagination('tb_reservations', 'name', req).then(pag=>{ 
     res.render('admin/reservations', admin.getParams(req, {
-      data,
-      date:{},
-      moment
+      data: pag.data,
+      ttlReg: pag.ttlReg,
+      ttlPag: pag.ttlPag,
+      curPag: pag.curPag,
+      links: pag.links,
+      date:{
+        start: start,
+        end: end
+      },
+      moment,
+      
     })); 
   });
 });
@@ -156,27 +167,34 @@ router.post('/reservations', function(req, res, next) {
     let dma = fields.date.split('/');
     fields.date = `${dma[2]}-${dma[1]}-${dma[0]}]`;
   }
-  reservations.save(fields, res).then(results=>{
-          res.send(results);
-      }).catch(e=>{        
-          res.send(e);
+  bdAction.actionSave(fields, 'tb_reservations').then(results=>{      
+        res.send(results);
+      }).catch(e=>{
+        res.send(e);
       });  
 });
 
 router.put('/reservations', function(req, res, next) {
-  reservations.update(req.fields).then(results=>{
-        res.send(results);
-      }).catch(e=>{
-        res.send(e);
-      })
+  
+    bdAction.actionUpdate(req.fields, 'tb_reservations').then(results=>{        
+      res.send(results);
+      
+    }).catch(e=>{
+      
+      res.send(e);
+    })
 });
 
 router.delete('/reservations/:id', function(req, res, next) {
-  reservations.delete(req.params.id).then(results=>{
+  
+      bdAction.actionDelete('tb_reservations', req.params.id).then(results=>{ 
         res.send(results);
+      
       }).catch(e=>{
+     
         res.send(e);
       }) 
+      
 });
 
 /*

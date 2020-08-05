@@ -28,7 +28,7 @@
           <div class="box-header" style="height:44px;">
 
             <div class="box-tools">
-              <form action="">
+              <form action="/admin/reservations">
                 <div class="form-group" style="width: 182px; float: left">
                   <div class="input-group">
                     <div class="input-group-addon">
@@ -86,14 +86,13 @@
               </tbody>
             </table>
           </div>
-          <!-- /.box-body onclick="actionEdit(this, 'reservations', 'Alteração de Reserva')" onclick="actionDelete(this, 'reservations')" -->
-          <div class="box-footer clearfix">
+          <div class="box-footer clearfix" >
             <ul class="pagination pagination-sm no-margin pull-right">
-              <li class="active"><a href="#">«</a></li>
-              <li><a href="#">1</a></li>
-              <li><a href="#">2</a></li>
-              <li><a href="#">3</a></li>
-              <li><a href="#">»</a></li>
+                           
+              <% links.forEach(link=>{ %>
+                <li class="<%=link.clazz%>"><a href="<%=link.href%>"><%= link.text %></a></li>
+              <%})%>
+              <li class="active"><a href="#">Total= <%= ttlPag %></a></li> 
             </ul>
           </div>
           <!-- /.box-footer -->
