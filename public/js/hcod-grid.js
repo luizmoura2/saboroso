@@ -34,7 +34,7 @@ class HcodGrid{
         let form = document.querySelectorAll('form');        
         let btns = document.querySelectorAll('button');
         form.forEach(frm=>{  
-            console.log(frm);   
+              
             let frmId = frm.getAttribute('id');
            // let btns = frm.querySelectorAll('button');
             btns.forEach(btn=>{

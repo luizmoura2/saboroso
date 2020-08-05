@@ -3,7 +3,7 @@ var router = express.Router();
 var users = require('./../inc/users');
 var admin = require('./../inc/admin');
 //var menus = require('./../inc/menus');
-//var reservations = require('./../inc/reservations');
+var bdChart = require('./../inc/bdChart');
 var bdAction = require('./../inc/bdActions');
 var path = require('path');
 var formidable = require('formidable');
@@ -155,8 +155,7 @@ router.get('/reservations', function(req, res, next) {
         start: start,
         end: end
       },
-      moment,
-      
+      moment      
     })); 
   });
 });
@@ -195,6 +194,17 @@ router.delete('/reservations/:id', function(req, res, next) {
         res.send(e);
       }) 
       
+});
+
+router.get('/reservations/chart', function(req, res, next) {  
+ 
+  req.query.start = (req.query.start) ? req.query.start : moment().subtract(3, 'year').format('YYYY-MM-DD');
+  req.query.end = (req.query.end) ? req.query.end : moment().format('YYYY-MM-DD');
+  
+  bdChart.chart(req).then(dataChart=>{
+    res.send(dataChart);
+  });
+
 });
 
 /*

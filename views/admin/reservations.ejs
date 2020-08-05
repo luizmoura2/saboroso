@@ -40,7 +40,7 @@
                 <div class="form-group" style="width: 182px; float: left">
                   <div class="input-group">
                     <div class="input-group-addon">
-                      até
+                      &nbsp&nbsp&nbsp&nbsp até
                     </div>
                     <input type="date" name="end" class="form-control unstyled" value="<%= date.end %>">
                   </div>
@@ -50,6 +50,9 @@
                 </div>
               </form>
             </div>
+          </div>
+          <div style="padding:10px">
+            <canvas id="chart" style="height: 50px;"></canvas>
           </div>
           <!-- /.box-header -->
           <div class="box-body no-padding">
@@ -159,12 +162,58 @@
 <%- include('./inc/footer') -%>
 
 <script src="/js/moment.min.js"></script>
+<script src="/chart.js/dist/Chart.min.js"></script>
 <script src="/js/lcomFormSave.js"></script>
 <script src="/js/hcod-grid.js"></script>
 <script>
-  new HcodGrid({
-    deleteUrl: '/admin/reservation/${data.id}',
-    deleteMsg: 'Desja excluir a reserva ${data.nome}'
-  })
+  new HcodGrid({});
+
+  let container = document.querySelector('#chart').getContext('2d');
+  let grafico = new Chart(container, {
+    type: 'line',
+    data:{},
+    options:{
+      tooltips:{
+        mode: 'index',
+        intersect: false,
+      },
+      scales: {
+           xAxes: [{
+                display: true,
+                scaleLabel: {
+                  display: true,
+                  labelString: 'Mes'
+                }
+                
+            }],
+            yAxes: [{
+                display: true,
+                scaleLabel: {
+                  display: true,
+                  labelString: 'Reservas'
+                },
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    }
+  });
+  fetch(`/admin/reservations/chart${window.location.search}`)
+    .then(response=>response.json())
+    .then(json=>{
+      grafico.data = {
+        labels:json.months,
+        datasets:[{
+          data: json.values,
+          label:'Reservas',
+          backgroundColor: '#23E88B',
+          borderColor: '#0F7143',
+          borderWidth: 1,
+          fill: false,
+          pointBackgroundColor: '#095632'
+        }]
+      }
+      grafico.update();
+    }); 
 </script>
-<!-- script src="/js/lcomAction.js"></script -->
