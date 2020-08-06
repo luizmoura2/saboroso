@@ -4,7 +4,11 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var formidable = require('formidable');
-
+//================================
+var http = require('http');
+// passa o http-server par ao socketio
+var socket = require('socket.io');
+//================================
 const redis = require('redis');
 const session = require('express-session');
 let RedisStore = require('connect-redis')(session)
@@ -25,6 +29,16 @@ var adminRouter = require('./routes/admin');
 const { copyFileSync } = require('fs');
 
 var app = express();
+
+var http =http.Server(app);
+var io = socket(http)
+// sempre que o socketio receber uma conexão vai devoltar realizar o broadcast dela
+io.on('connection', function(socket){
+  console.log('novo usuario conectado');
+  /*socket.on('chat message', function(msg){
+    io.emit('chat message', msg);
+  });*/
+});
 
 app.use( (req, res, next)=>{ 
     if (['put', 'PUT', 'POST', 'post'].indexOf(req.method) > -1) {
@@ -84,4 +98,9 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-module.exports = app;
+// inicia o servidor na porta informada, no caso vamo iniciar na porta 3000
+http.listen(3000, function(){
+  console.log('Servidor rodando em: http://localhost:3000');
+});
+
+//module.exports = app;

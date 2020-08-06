@@ -4,7 +4,7 @@ var moment = require('moment');
 
 module.exports = {
 
-    chart(req){
+    chartgit (req){
         return new Promise((resolve, reject)=>{
             let query = `SELECT
                         concat(year(date),'-',month(date)) as date,
@@ -14,7 +14,7 @@ module.exports = {
                     WHERE date BETWEEN '${req.query.start}' and '${req.query.end}'
                     GROUP BY YEAR(date) DESC, month(date) DESC
                     ORDER BY YEAR(date) DESC, month(date) DESC;`;
-console.log(query);
+        console.log(query);
             conn.query(query, (err, results)=>{
                 if (err){
                     reject(err);
