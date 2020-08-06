@@ -42,7 +42,6 @@ class HcodGrid{
                 if (btn.classList.contains('btn-insert') && frmId === 'create'){
                     this.alert = frm.querySelector('#alert');
                     this.actionInsert(btn, frm);
-                    console.log(frm);
                 }
                 
                 if (btn.classList.contains('btn-update')){ 
@@ -125,7 +124,6 @@ class HcodGrid{
     };
     
     actionInsert =  (btn, frm) =>{
-        console.log(frm);
         btn.addEventListener('click', e=>{
             let inpt = frm.querySelector('#inputPasswordCreate');
             if (inpt){
@@ -143,7 +141,7 @@ class HcodGrid{
     };
 
     updatePw = (btn, frm)=>{
-        //console.log(btn, frm);
+        
         btn.addEventListener('click', e=>{
             let aux = JSON.parse(btn.dataset.aux);
             frm.querySelector(`#${aux.hidden}`).value = aux.id;

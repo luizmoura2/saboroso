@@ -4,7 +4,7 @@ var moment = require('moment');
 
 module.exports = {
 
-    chartgit (req){
+    chart(req){
         return new Promise((resolve, reject)=>{
             let query = `SELECT
                         concat(year(date),'-',month(date)) as date,
@@ -32,6 +32,23 @@ module.exports = {
                 }
             });
         })
+    },
+
+    dashboard(){
+        return new Promise((resolve, reject)=>{
+            let query = `select 
+                            (select count(*) from tb_contacts) as nrcontacts,
+                            (select count(*) from tb_menus) as nrmenus,
+                            (select count(*) from tb_reservations) as nrreservations,
+                            (select count(*) from tb_users) as nrusers;`;
+            conn.query(query, (err, results)=>{
+                if (err){
+                    reject(err);
+                }else{
+                    resolve(results[0]);
+                }
+            });
+        });
     }
 
 };

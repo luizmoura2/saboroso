@@ -4,13 +4,15 @@ const { get } = require('../routes/admin');
 
 module.exports = {
 
-    render(fields, res, error, clazz){
-        res.render('reservations', { title: 'Reservas - Restaurante Saboroso!',
-            background: 'images/img_bg_2.jpg',
-            h1: 'Reserve uma Mesa!',
+    render(fields, res, data){
+        
+        res.render(data.url, { 
+            title: data.title,
+            background: data.image,
+            h1: data.dica,
             body: fields,
-            error: error,
-            clazz: clazz
+            error: data.error,
+            clazz: data.clazz
         });  
     },
 
@@ -118,7 +120,7 @@ module.exports = {
              
         let query = `INSERT INTO ${table}(${this.tuplas.join()}) VALUES (${this.interr.join()})`;
         let params = this.params;
-    
+        
         return new Promise((resolve, reject)=>{
             conn.query(query, params, (error, result)=>{
                 if (error){
