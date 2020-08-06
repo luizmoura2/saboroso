@@ -1,6 +1,5 @@
 const conn = require('./../inc/db');
 let Pagination = require('./../inc/Pagination');
-const { get } = require('../routes/admin');
 
 module.exports = {
 
