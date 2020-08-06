@@ -1,10 +1,9 @@
 var express = require('express');
 var router = express.Router();
+var bdAction = require('./../inc/bdActions');
 var users = require('./../inc/users');
 var admin = require('./../inc/admin');
-//var menus = require('./../inc/menus');
 var bdChart = require('./../inc/bdChart');
-var bdAction = require('./../inc/bdActions');
 var moment = require('moment');
 var path = require('path');
 
@@ -179,20 +178,19 @@ module.exports = function(io){
     router.get('/reservations', function(req, res, next) {
       let start = (req.query.start) ? req.query.start : moment().subtract(1, 'year').format('YYYY-MM-DD');
       let end = (req.query.end) ? req.query.end : moment().format('YYYY-MM-DD');
-      //bdAction.actionGet('tb_reservations', 'name', req).then(data=>{ 
         bdAction.actionPagination('tb_reservations', 'name', req).then(pag=>{ 
-        res.render('admin/reservations', admin.getParams(req, {
-          data: pag.data,
-          ttlReg: pag.ttlReg,
-          ttlPag: pag.ttlPag,
-          curPag: pag.curPag,
-          links: pag.links,
-          date:{
-            start: start,
-            end: end
-          },
-          moment      
-        })); 
+          res.render('admin/reservations', admin.getParams(req, {
+            data: pag.data,
+            ttlReg: pag.ttlReg,
+            ttlPag: pag.ttlPag,
+            curPag: pag.curPag,
+            links: pag.links,
+            date:{
+              start: start,
+              end: end
+            },
+            moment      
+          })); 
       });
     });
 
