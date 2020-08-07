@@ -82,7 +82,7 @@
                         data-aux='{"screen":"reservations","title":"Alteração de Reserva", "hidden":"idc", "target":"modal-create"}'
                         <i class="fa fa-pencil"></i> Editar</button>&nbsp;<button type="button" 
                         class="btn btn-xs btn-danger btn-delete" 
-                        data-aux='{"id":<%=row.id%>, "screen":"reservations", "title":"<%=row.name%>", "hidden":"idc"}'>
+                        data-aux='{"id":<%=row.id%>, "screen":"<%=data.tela%>", "title":"<%=row.name%>", "hidden":"idc", "target":"modal-delete"}'>
                         <i class="fa fa-trash"></i> Excluir</button></td>
                 </tr>
                 <%})%>
@@ -158,6 +158,7 @@
       </div>
       <!-- /.modal-dialog -->
     </div>
+    <%- include('./inc/alertDel') -%>
 
 <%- include('./inc/footer') -%>
 

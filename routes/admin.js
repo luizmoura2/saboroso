@@ -105,6 +105,7 @@ module.exports = function(io){
 
     router.get('/contacts', function(req, res, next) {
       bdAction.actionGet('tb_contacts', 'id').then(data=>{
+        data.tela = 'contacts';
         res.render('admin/contacts', admin.getParams(req, {
           data,
           date:{},
@@ -167,8 +168,7 @@ module.exports = function(io){
       bdAction.actionGet('tb_menus', 'title').then(data=>{
         data.tela = 'menus';
         res.render('admin/menus', admin.getParams(req, {
-          data,
-          tela:'menus'
+          data
         })); 
       });
     });
@@ -181,6 +181,7 @@ module.exports = function(io){
       let start = (req.query.start) ? req.query.start : moment().subtract(1, 'year').format('YYYY-MM-DD');
       let end = (req.query.end) ? req.query.end : moment().format('YYYY-MM-DD');
         bdAction.actionPagination('tb_reservations', 'name', req).then(pag=>{ 
+          pag.data.tela = 'reservations';
           res.render('admin/reservations', admin.getParams(req, {
             data: pag.data,
             ttlReg: pag.ttlReg,
@@ -249,6 +250,7 @@ module.exports = function(io){
     */
     router.get('/users', function(req, res, next) {
       bdAction.actionGet('tb_users', 'name').then(data=>{
+        data.tela = 'users';
         res.render('admin/users', admin.getParams(req, {
           data     
         })); 
@@ -295,6 +297,7 @@ module.exports = function(io){
     /*Procedimento para tratamento de emails */
     router.get('/emails', function(req, res, next) {
       bdAction.actionGet('tb_emails', 'email').then(data=>{
+        data.tela = 'emails';
         res.render('admin/emails',admin.getParams(req, {
           data     
         })); 

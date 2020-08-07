@@ -178,24 +178,6 @@ class HcodGrid{
         }); 
     };
 
-    /*actionDelete = (btn)=>{ 
-        //console.log(btn, frm); 
-        btn.addEventListener('click', e=>{
-            let aux = JSON.parse(btn.dataset.aux);
-            
-            if (confirm(`Excluir o item ${aux.screen}: id = ${aux.id} de nome ${aux.title}`)){
-
-                fetch(`/admin/${aux.screen}/${aux.id}`, {
-                    method:'delete'
-                })
-                .then(response=>response.json())
-                .then(json=>{
-                    window.location.reload();
-                });
-            } 
-        });  
-    };*/ 
-
     actionDelete= (btn, frm)=>{    
         
         btn.addEventListener('click', e=>{
@@ -203,26 +185,22 @@ class HcodGrid{
             let msg =`Excluir o item ${aux.screen}: ${aux.id} de nome ${aux.title}`;                
             frm.querySelector('.span-msg').textContent = msg;
             frm.querySelector('.btn-submitDel').setAttribute('data-aux', btn.dataset.aux)
-            frm.querySelector('#id').value = aux.id;
-            frm.setAttribute('action', `/admin/${aux.screen}`);
             $(`#${aux.target}`).modal('show');
         });  
     };
     
-    actionSubmitDel = (btn)=>{ 
-        
+    actionSubmitDel = (btn)=>{       
        
         btn.addEventListener('click', e=>{
             let aux = JSON.parse(btn.dataset.aux);
-            console.log(aux)
+            
             fetch(`/admin/${aux.screen}/${aux.id}`, {
                     method:'delete'
                 })
                 .then(response=>response.json())
                 .then(json=>{
                     window.location.reload();
-                });
-             
+                });             
         })  
     }; 
 }

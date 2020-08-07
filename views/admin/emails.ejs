@@ -38,7 +38,7 @@
                                     <td><%= row.email%></td>
                                     <td>
                                         <button type="button" class="btn btn-xs btn-danger btn-delete"
-                                        data-aux='{"id":"<%=row.id%>", "screen":"emails", "title":"<%=row.email%>"}'>
+                                            data-aux='{"id":"<%=row.id%>", "screen":"<%=data.tela%>", "title":"<%=row.email%>", "target":"modal-delete"}'>
                                         <i class="fa fa-trash"></i> Excluir</button></td>
                                 </tr>
                                 <% }) %>
@@ -52,6 +52,7 @@
             </section>
             <!-- /.content -->
         </div>
+        <%- include('./inc/alertDel') -%>
         <!-- /.content-wrapper -->
 
 <%- include('./inc/footer') -%>

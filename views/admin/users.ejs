@@ -51,7 +51,7 @@
                             <i class="fa fa-lock"></i> Alterar Senha</button>&nbsp;
                 
                             <button type="button" class="btn btn-xs btn-danger btn-delete"
-                            data-aux='{"id":"<%=row.id%>", "screen":"users", "title":"<%=row.name%>"}'>
+                            data-aux='{"id":"<%=row.id%>", "screen":"<%=data.tela%>", "title":"<%=row.name%>", "target":"modal-delete"}'>
                             <i class="fa fa-trash"></i> Excluir</button></td>
                     </tr>
                     <% }) %>
@@ -135,6 +135,7 @@
     </div>
     <!-- /.modal-dialog -->
   </div>
+  <%- include('./inc/alertDel') -%>
 
 <%- include('./inc/footer') -%>
 <script src='/js/LcomFileReader.js'></script>
