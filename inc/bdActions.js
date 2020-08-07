@@ -39,9 +39,6 @@ module.exports = {
         let initPag = regPPag*page;
         let query = [];  
         let params = []; 
-        
-       // console.log(typeof page, page) 
-
         if (page>-1){
             
             query.push(`SELECT * FROM ${table} ORDER BY ${order} LIMIT ${initPag}, ${regPPag} `); 
@@ -119,7 +116,7 @@ module.exports = {
              
         let query = `INSERT INTO ${table}(${this.tuplas.join()}) VALUES (${this.interr.join()})`;
         let params = this.params;
-        console.log(query, params);
+        
         return new Promise((resolve, reject)=>{
             conn.query(query, params, (error, result)=>{
                 if (error){
@@ -165,7 +162,6 @@ module.exports = {
             this.assemblerUpdate(fields);
             let query = `UPDATE ${table} SET ${this.keys.join()} WHERE id=?`;
             let params = this.vals;
-            console.log(query, params);
             conn.query(query, params, (err, results)=>{
                 if (err){
                     reject(err);

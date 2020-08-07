@@ -152,7 +152,7 @@ module.exports = function(io){
     });
 
     router.delete('/menus/:id', function(req, res, next) {
-      
+      console.log(req.query);
       bdAction.actionDelete('tb_menus', req.params.id).then(results=>{ 
             io.emit('dashboard update'); 
             res.send(results);
@@ -165,8 +165,10 @@ module.exports = function(io){
     router.get('/menus', function(req, res, next) {
       
       bdAction.actionGet('tb_menus', 'title').then(data=>{
+        data.tela = 'menus';
         res.render('admin/menus', admin.getParams(req, {
-          data
+          data,
+          tela:'menus'
         })); 
       });
     });

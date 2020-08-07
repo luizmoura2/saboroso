@@ -45,29 +45,28 @@ class HcodGrid{
                 }
                 
                 if (btn.classList.contains('btn-update')){ 
-                    this.actionUpdate(btn, frm);
-                    
+                    this.actionUpdate(btn, frm);                    
                 };
 
                 if (btn.classList.contains('btn-password')){
-                    this.updatePw(btn, frm); 
-                                 
+                    this.updatePw(btn, frm);                                 
                 }
 
                 if (btn.classList.contains('btn-delete')){
-                    this.actionDelete(btn, frm);
-                    
+                    this.actionDelete(btn, frm);                    
                 }
-                
+                if (btn.classList.contains('btn-submitDel')){
+                    this.actionSubmitDel(btn, frm);
+                    this.btnSave = btn;                    
+                }
+
                 if (btn.classList.contains('btn-submit')){
                     this.actionSubmit(btn, frm);
-                    this.btnSave = btn;
-                    
+                    this.btnSave = btn;                    
                 }
 
                 if (btn.classList.contains('btn-submitPw')){
-                    this.actionSubmit(btn, frm); 
-                                     
+                    this.actionSubmit(btn, frm);                                     
                 }
                                 
             });
@@ -111,7 +110,7 @@ class HcodGrid{
             }
             
             let path = frm.getAttribute('action'); 
-            console.log(path, option);
+            //console.log(path, option);
             fetch(path, option)
                 .then(response=>response.json())
                 .then(json=>{    
@@ -179,11 +178,11 @@ class HcodGrid{
         }); 
     };
 
-    actionDelete = (btn)=>{ 
+    /*actionDelete = (btn)=>{ 
         //console.log(btn, frm); 
         btn.addEventListener('click', e=>{
             let aux = JSON.parse(btn.dataset.aux);
-        
+            
             if (confirm(`Excluir o item ${aux.screen}: id = ${aux.id} de nome ${aux.title}`)){
 
                 fetch(`/admin/${aux.screen}/${aux.id}`, {
@@ -195,5 +194,35 @@ class HcodGrid{
                 });
             } 
         });  
+    };*/ 
+
+    actionDelete= (btn, frm)=>{    
+        
+        btn.addEventListener('click', e=>{
+            let aux = JSON.parse(btn.dataset.aux);
+            let msg =`Excluir o item ${aux.screen}: ${aux.id} de nome ${aux.title}`;                
+            frm.querySelector('.span-msg').textContent = msg;
+            frm.querySelector('.btn-submitDel').setAttribute('data-aux', btn.dataset.aux)
+            frm.querySelector('#id').value = aux.id;
+            frm.setAttribute('action', `/admin/${aux.screen}`);
+            $(`#${aux.target}`).modal('show');
+        });  
+    };
+    
+    actionSubmitDel = (btn)=>{ 
+        
+       
+        btn.addEventListener('click', e=>{
+            let aux = JSON.parse(btn.dataset.aux);
+            console.log(aux)
+            fetch(`/admin/${aux.screen}/${aux.id}`, {
+                    method:'delete'
+                })
+                .then(response=>response.json())
+                .then(json=>{
+                    window.location.reload();
+                });
+             
+        })  
     }; 
 }

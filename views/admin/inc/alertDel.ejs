@@ -1,0 +1,27 @@
+<div class="modal fade" id="modal-delete">
+    <div class="modal-dialog modal-sm">
+        <form  method="delete" id="excluir">
+            <input type="hidden" id="id" name="id" value=""/>
+            <div class="modal-content">
+                <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">Confirma</h4>
+                </div>
+                
+                <div class="modal-body">
+                    <span class="span-msg"></span>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-xs btn-info" data-dismiss="modal">
+                        <i class="fa fa-reply "></i> Cancelar</button>
+                    <button type="button" class="btn btn-xs btn-danger btn-submitDel"
+                        data-aux=''>
+                        <i class="fa fa-trash" ></i> Excluir</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
